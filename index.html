@@ -4478,6 +4478,25 @@ const langPart=()=>`<h3 class="lgh">Language</h3><div class="lgc"><b>Language</b
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="langSel")setLang(e.target.value)});
 function setLang(l){if(!LANGS[l])return;LANG=l;try{localStorage.setItem("mx-lang",l)}catch(e){}document.documentElement.lang=l;render();trTree(document.body)}
 document.documentElement.lang=LANG;if(LANG!=="en")trTree(document.body);
+/* ---- Keep the account visible while the page reloads ---- */
+(function(){
+  const AK="mx-acct";
+  try{
+    const a=JSON.parse(localStorage.getItem(AK)||"null");
+    const ok=a&&a.id&&Object.keys(localStorage).some(k=>/^sb-.*-auth-token/.test(k));
+    if(ok){user={id:a.id,email:a.email};role=a.role||"user";pname=a.pname||"";pcountry=a.pcountry||"";pbirth=a.pbirth||null;
+      lists={watchlist:new Set(a.w||[]),favorites:new Set(a.f||[])}}
+  }catch(e){}
+  const _lu=loadUser;
+  loadUser=async function(){
+    const r=await _lu.apply(this,arguments);
+    try{
+      if(!user)localStorage.removeItem(AK);
+      else if(profReady)localStorage.setItem(AK,JSON.stringify({id:user.id,email:user.email,role,pname,pcountry,pbirth,w:[...lists.watchlist],f:[...lists.favorites]}));
+    }catch(e){}
+    return r;
+  };
+})();
 /* ---- Stay on the same page after a refresh ---- */
 (function(){
   const SK="mx-state";let st=null,ready=false,yT=0;
