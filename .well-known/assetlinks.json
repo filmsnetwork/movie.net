@@ -3,6 +3,9 @@
   "target": {
     "namespace": "android_app",
     "package_name": "dev.workers.officialmovies.movie_net.twa",
-    "sha256_cert_fingerprints": ["9F:55:A7:32:67:66:27:BB:EE:2C:93:B2:84:30:93:B5:0E:B7:0E:84:09:6E:51:E1:8A:69:D9:4A:B9:05:5D:66"]
+    "sha256_cert_fingerprints": [
+      "C3:F7:AA:1B:53:60:79:5A:88:54:C9:A5:2F:B1:D2:BA:C0:39:4D:91:B5:65:9D:33:FC:08:5C:31:31:A6:C8:13",
+      "9F:55:A7:32:67:66:27:BB:EE:2C:93:B2:84:30:93:B5:0E:B7:0E:84:09:6E:51:E1:8A:69:D9:4A:B9:05:5D:66"
+    ]
   }
 }]
