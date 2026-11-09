@@ -4478,6 +4478,34 @@ const langPart=()=>`<h3 class="lgh">Language</h3><div class="lgc"><b>Language</b
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="langSel")setLang(e.target.value)});
 function setLang(l){if(!LANGS[l])return;LANG=l;try{localStorage.setItem("mx-lang",l)}catch(e){}document.documentElement.lang=l;render();trTree(document.body)}
 document.documentElement.lang=LANG;if(LANG!=="en")trTree(document.body);
+/* ---- Stay on the same page after a refresh ---- */
+(function(){
+  const SK="mx-state";let st=null,ready=false,yT=0;
+  try{st=JSON.parse(sessionStorage.getItem(SK)||"null")}catch(e){}
+  const OK=["home","library","search","me","settings","history","help","list","highlights","local","actor","shelf","dash"];
+  if(st&&OK.includes(st.view)){
+    if(st.view!=="dash"){view=st.view;if(st.ak){actorKey=st.ak;actorFrom=st.af||"home"}if(st.sh)shelfId=st.sh}
+    if(st.tab)tab=st.tab;if(st.sq)sq=st.sq;if(st.dtab)dtab=st.dtab;
+  }
+  const save=()=>{if(!ready)return;try{sessionStorage.setItem(SK,JSON.stringify({view,tab,sq,dtab,ak:actorKey,af:actorFrom,sh:shelfId,y:Math.round(scrollY),info:$("#info").hidden?null:NAV.info,dash:view==="dash"}))}catch(e){}};
+  const _r=render;render=function(){const r=_r.apply(this,arguments);save();return r};
+  addEventListener("scroll",()=>{clearTimeout(yT);yT=setTimeout(save,200)},{passive:true});
+  addEventListener("pagehide",save);document.addEventListener("visibilitychange",()=>{if(document.hidden)save()});
+  new MutationObserver(save).observe($("#info"),{attributes:true,attributeFilter:["hidden"]});
+  if(!st){ready=true;return}
+  let n=0;const t=setInterval(()=>{
+    n++;
+    if(movies.length&&(!sb||n>2)){
+      clearInterval(t);
+      if(st.info)try{openInfo(st.info)}catch(e){}
+      let k=0;const sc=setInterval(()=>{scrollTo(0,st.y||0);if(++k>8||Math.abs(scrollY-(st.y||0))<4)clearInterval(sc)},120);
+      setTimeout(()=>{ready=true;save()},700);
+      if(st.dash){
+        let m=0;const w=setInterval(()=>{m++;if(user&&role){clearInterval(w);if(isStaff()){dtab=st.dtab||"titles";go("dash");dashLoad();setTimeout(()=>scrollTo(0,st.y||0),400)}}else if(m>40)clearInterval(w)},250);
+      }
+    }else if(n>80){clearInterval(t);ready=true}
+  },150);
+})();
 init();
 </script>
 <script>
