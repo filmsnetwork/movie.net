@@ -20,3 +20,8 @@
 
 /icon.svg
   Cache-Control: public, max-age=86400
+
+/.well-known/assetlinks.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300

@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "dev.workers.officialmovies.movie_net.twa",
+    "sha256_cert_fingerprints": ["9F:55:A7:32:67:66:27:BB:EE:2C:93:B2:84:30:93:B5:0E:B7:0E:84:09:6E:51:E1:8A:69:D9:4A:B9:05:5D:66"]
+  }
+}]
