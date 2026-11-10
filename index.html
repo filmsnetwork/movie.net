@@ -1759,10 +1759,11 @@ let cur=null,eps=[],ep=null,season=1;
 const hue=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0)%360;
 const grad=m=>{const h=hue(m.title);return document.documentElement.dataset.theme==="light"?`linear-gradient(160deg,hsl(${36+h%14} 80% 58%),hsl(${28+h%12} 60% 30%))`:`linear-gradient(160deg,hsl(${212+h%26} 18% 26%),hsl(${222+h%22} 22% 9%))`};
 const heroPos=m=>{const cl=(v,d,lo=0,hi=100)=>{v=Number(v);return Number.isFinite(v)?Math.max(lo,Math.min(hi,Math.round(v))):d},c=m.hero_fit==="contain",img=bgOf(m,1).replace(/^background-image:/,"");return`;--himg:${img};--hx:${c?50:cl(m.hero_x,50)}%;--hy:${c?50:cl(m.hero_y,25)}%;--hz:${cl(m.hero_zoom,100,100,300)/100};--hs:${c?"contain":"cover"}`};
-const bgOf=(m,back)=>{const u=back?(m.backdrop_url||m.poster_url):m.poster_url;const cu=u?cssUrl(u):"";return cu?`background-image:url('${esc(cu)}')`:`background-image:${grad(m)}`};
+const slim=(u,back)=>{if(!u||u.indexOf("image.tmdb.org/t/p/")<0)return u;const w=back?(innerWidth<900?"w780":"w1280"):"w342";return u.replace(/\/t\/p\/w(?:500|780|1280|original)\//,"/t/p/"+w+"/")};
+const bgOf=(m,back)=>{const u=slim(back?(m.backdrop_url||m.poster_url):m.poster_url,back);const cu=u?cssUrl(u):"";return cu?`background-image:url('${esc(cu)}')`:`background-image:${grad(m)}`};
 const poster=m=>`<div class="p" style="${bgOf(m)}">${m.poster_url?"":esc(m.title)}</div>`;
 const sub=m=>[m.release_year,(m.genres||[])[0]].filter(Boolean).join(" · ");
-const posterL=m=>m.poster_url?`<div class="p lz" data-bg="${esc(m.poster_url)}"></div>`:poster(m);
+const posterL=m=>m.poster_url?`<div class="p lz" data-bg="${esc(slim(m.poster_url))}"></div>`:poster(m);
 const card=(m,rk,lz)=>`<button class="c" data-id="${esc(m.id)}" data-y="${esc(m.release_year||"")}">${lz?posterL(m):poster(m)}${rk?`<i class="rk">${rk}</i>`:""}${m.rating?`<span class="rt rbadge">${ic("star","f")} ${esc(m.rating)}</span>`:""}<b>${esc(m.title)}</b><small>${esc(sub(m))}</small></button>`;
 const row=(t,l,rank)=>l.length?`<section><div class="sh"><h2>${esc(t)}</h2><button class="sa" data-act="seeall" data-t="${esc(t)}">See All ${ic("chevron")}</button></div><div class="row">${l.map((m,i)=>card(m,rank?i+1:0)).join("")}</div></section>`:"";
 const lrow=(m,i)=>`<button class="lr" data-id="${esc(m.id)}">${i!=null?`<span class="ln">${i+1}</span>`:""}${poster(m)}<div class="li"><b>${esc(m.title)}</b><small>${esc(sub(m))}</small></div>${m.rating?`<span class="lrt">${ic("star","f")} ${esc(m.rating)}</span>`:""}</button>`;
@@ -5415,7 +5416,7 @@ $("#jfList").addEventListener("click",async e=>{
     clearTimeout(t);
     const f=document.getElementById("fsheet");if(f&&!f.hidden&&window.fsClose)fsClose();
     m.innerHTML=`<div style="padding:18px 16px">${skStats()}</div>`;scrollTo(0,0);
-    t=setTimeout(()=>_g(v),320);
+    t=setTimeout(()=>_g(v),130);
   };
 })();
 /* ================= Admin alerts ================= */
