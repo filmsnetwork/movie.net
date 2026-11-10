@@ -1382,6 +1382,8 @@ body.gap-off .gapl{display:none}body.gap-off .gax .gx1{display:none}body.gap-off
 }
 @media(min-width:1500px){#info .sim{gap:24px 20px}}
 @media(min-width:1000px){#main .ll{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px}}
+#nav .nbrand i{background:none!important;box-shadow:none!important;padding:0;overflow:hidden}#nav .nbrand i img{width:100%;height:100%;display:block;border-radius:22%}
+#intro .im{background:none!important;box-shadow:none!important;padding:0;overflow:hidden}#intro .im img{width:100%;height:100%;display:block}
 </style>
 <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin><link rel="preconnect" href="https://i.ytimg.com" crossorigin><link rel="dns-prefetch" href="https://www.google.com"><link rel="preconnect" href="https://archive.org" crossorigin><link rel="dns-prefetch" href="https://archive.org"><link rel="preconnect" href="https://miqxdcihveangntqucib.supabase.co" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
@@ -1395,7 +1397,7 @@ body.gap-off .gapl{display:none}body.gap-off .gax .gx1{display:none}body.gap-off
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js").then(function(r){try{r.sync&&r.sync.register("mx-sync")}catch(e){}try{r.periodicSync&&r.periodicSync.register("mx-refresh",{minInterval:864e5})}catch(e){}}).catch(function(){})})}</script>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><div class="amb"></div><div class="ir"></div><div class="ib"><div class="im"><svg viewBox="0 0 24 24"><path d="M6.5 3.8c0-1.3 1.4-2.1 2.5-1.4l11 7.7c1 .7 1 2.1 0 2.8l-11 7.7c-1.1.7-2.5-.1-2.5-1.4z" fill="#14161c"/></svg></div><div class="iw"><span style="animation-delay:0.70s">m</span><span style="animation-delay:0.77s">o</span><span style="animation-delay:0.84s">v</span><span style="animation-delay:0.91s">i</span><span style="animation-delay:0.98s">e</span><span style="animation-delay:1.05s">s</span><span style="animation-delay:1.12s" class="n">.</span><span style="animation-delay:1.19s" class="n">n</span><span style="animation-delay:1.26s" class="n">e</span><span style="animation-delay:1.33s" class="n">t</span></div></div><div class="il"></div><div class="tg">Watch anything. Anywhere.</div><button class="sk" type="button">Skip</button></div>
+<div id="intro" aria-hidden="true"><div class="amb"></div><div class="ir"></div><div class="ib"><div class="im"><img src="./icon-512.png" alt=""></div><div class="iw"><span style="animation-delay:0.70s">m</span><span style="animation-delay:0.77s">o</span><span style="animation-delay:0.84s">v</span><span style="animation-delay:0.91s">i</span><span style="animation-delay:0.98s">e</span><span style="animation-delay:1.05s">s</span><span style="animation-delay:1.12s" class="n">.</span><span style="animation-delay:1.19s" class="n">n</span><span style="animation-delay:1.26s" class="n">e</span><span style="animation-delay:1.33s" class="n">t</span></div></div><div class="il"></div><div class="tg">Watch anything. Anywhere.</div><button class="sk" type="button">Skip</button></div>
 <script>(function(){
 var e=document.getElementById("intro"),ctx=null;
 try{if(sessionStorage.getItem("mx-intro")){e.remove();return}sessionStorage.setItem("mx-intro","1")}catch(x){}
@@ -1440,7 +1442,7 @@ try{
 </header>
 <main id="main"><div class="skx" role="status" aria-busy="true" aria-label="Loading" style="padding:18px 16px"><i class="sk-b" style="width:62%;height:76px;border-radius:18px"></i><i class="sk-b" style="width:40%;height:34px"></i><i class="sk-b" style="width:92%;height:104px;border-radius:18px"></i><div class="skr"><i class="sk-b" style="width:100%;height:58px;border-radius:999px"></i><i class="sk-b" style="width:100%;height:58px;border-radius:999px"></i></div></div></main>
 <nav id="nav" aria-label="Main">
-  <div class="nbrand" aria-hidden="true"><i><svg viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></i>movies.net</div>
+  <div class="nbrand" aria-hidden="true"><i><img src="./icon-192.png" alt=""></i>movies.net</div>
   <div class="nlab" aria-hidden="true">Discover</div>
   <button data-v="home"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10.6V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8.4"/><path d="m2.5 11.6 8.6-7.7a1.4 1.4 0 0 1 1.8 0l8.6 7.7"/><path d="M9.5 21v-5.4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg></span>Home</button>
   <button class="dk" data-dtab="movie"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg></span>Movies</button>
