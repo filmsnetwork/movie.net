@@ -1,5 +1,5 @@
 /* movies.net service worker: keeps the app opening when offline. Never caches videos, the database or other sites. */
-const V = "mx-v6", SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png"];
+const V = "mx-v7", SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).catch(() => {})); self.skipWaiting(); });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V).map(x => caches.delete(x)))).then(() => self.clients.claim()));
