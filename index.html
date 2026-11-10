@@ -1402,6 +1402,18 @@ body.gap-off .gapl{display:none}body.gap-off .gax .gx1{display:none}body.gap-off
  #info .nfb>#castslot{margin-top:28px}
 }
 @media(min-width:900px){#info .nfb>.nfa2{justify-self:start}}
+
+/* desktop/light-theme: hero controls sit on a photo, so keep them light-on-dark in every theme */
+.hz .hs .ad{background:rgba(0,0,0,.45)!important;border:1.5px solid rgba(255,255,255,.85)!important;color:#fff!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.hz .hs .ad .i{color:#fff;stroke:#fff}.hz .hs .ad.on{background:var(--ac)!important;border-color:var(--ac)!important;color:var(--onac)!important}.hz .hs .ad.on .i{color:var(--onac);stroke:var(--onac)}
+.hz .hs .ha small{color:#fff;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.hz .hs .ft,.hz .hs h1,.hz .hs .hm,.hz .hs .hd{color:#fff}.hz .hs .ft{color:#15110a}
+:root[data-theme=light] .hz .hero::before{background:linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0) 65%)}
+@media (min-width:900px){:root[data-theme=light] .hz .hero::before{background:linear-gradient(90deg,rgba(0,0,0,.72),rgba(0,0,0,.36) 52%,rgba(0,0,0,.04)),linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0) 55%)}}
+:root[data-theme=light] .chips button:not(.on),:root[data-theme=light] .chip:not(.on){color:var(--ink)}
+:root[data-theme=light] .tabs button,:root[data-theme=light] .tb button{color:var(--mute)}
+:root[data-theme=light] .tabs button.on,:root[data-theme=light] .tb button.on{color:var(--ink)}
+/* desktop windows: pointer devices get the sidebar from 760px, and the bottom nav never overlaps content */
 </style>
 <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin><link rel="preconnect" href="https://i.ytimg.com" crossorigin><link rel="dns-prefetch" href="https://www.google.com"><link rel="preconnect" href="https://archive.org" crossorigin><link rel="dns-prefetch" href="https://archive.org"><link rel="preconnect" href="https://miqxdcihveangntqucib.supabase.co" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
