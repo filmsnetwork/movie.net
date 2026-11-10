@@ -2559,6 +2559,7 @@ function resolveLink(u){
   if(m=u.match(/^https?:\/\/(?:www\.)?archive\.org\/download\/([^\/?#]+)\/([^?#]+)/i))return{k:"archive",id:decodeURIComponent(m[1]),file:decodeURIComponent(m[2]),direct:u};
   if(/dropbox\.com/.test(u))return{k:"video",s:u.replace(/([?&])dl=0/,"$1raw=1")};
   if(/\.m3u8(\?|#|$)/i.test(u))return{k:"video",s:u,hls:true};
+  if(/\/[0-9a-f]{8}-[0-9a-f-]{27}\/\d{10,}-\d+\.(mp4|m4v|webm|mov|mkv|ogv)(\?|#|$)/i.test(u))return{k:"video",s:u};
   if(/\.(mp4|webm|ogg)(\?|#|$)/i.test(u))return{k:"video",s:u};
   return{k:"link",s:u};
 }
@@ -3340,9 +3341,28 @@ function parseEp(f,i){
   const n=e||i+1;return{season:s,episode:n,title:t||("Episode "+n),found}
 }
 const probeDur=f=>new Promise(res=>{const v=document.createElement("video"),u=URL.createObjectURL(f);let d=0;const done=x=>{if(d)return;d=1;URL.revokeObjectURL(u);res(x)};v.preload="metadata";v.onloadedmetadata=()=>done(isFinite(v.duration)?Math.round(v.duration/60):0);v.onerror=()=>done(0);setTimeout(()=>done(0),6000);v.src=u});
+/* ---- Cloudflare R2 storage: videos go straight from the browser to R2 (fast, cheap, no download fees) ---- */
+let R2ON=null;
+const r2Enabled=()=>R2ON||(R2ON=sb.functions.invoke("r2-sign",{body:{action:"status"}}).then(r=>!!(r.data&&r.data.enabled),()=>false));
+async function r2Upload(file,onP){
+  const ct=file.type||({mkv:"video/x-matroska",mp4:"video/mp4",m4v:"video/mp4",webm:"video/webm",mov:"video/quicktime"}[(file.name.split(".").pop()||"").toLowerCase()])||"application/octet-stream";
+  const r=await sb.functions.invoke("r2-sign",{body:{action:"sign",name:file.name,type:ct,size:file.size}});
+  let msg="";if(r.error){try{msg=(await r.error.context.json()).error}catch(e){}}
+  if(r.error||!r.data||!r.data.uploadUrl)throw new Error(msg||(r.data&&r.data.error)||"Could not start the upload.");
+  const {uploadUrl,publicUrl}=r.data;
+  await new Promise((ok,no)=>{
+    const x=new XMLHttpRequest();x.open("PUT",uploadUrl);x.setRequestHeader("Content-Type",ct);
+    x.upload.onprogress=e=>{if(e.lengthComputable&&onP)onP(e.loaded/e.total)};
+    x.onload=()=>x.status>=200&&x.status<300?ok():no(new Error("R2 refused the upload ("+x.status+"). Check the bucket permissions."));
+    x.onerror=()=>no(new Error("Upload to R2 failed. Check your internet and that the R2 bucket allows uploads from this site (CORS)."));
+    x.send(file);
+  });
+  onP&&onP(1);return publicUrl;
+}
 async function uploadVideo(file,onP){
   if(!sb||!user)throw new Error("Sign in first.");
   if(!VEXT.test(file.name)&&!/^video\//.test(file.type))throw new Error(file.name+" is not a video file.");
+  if(await r2Enabled())return r2Upload(file,onP);
   const ext=(file.name.split(".").pop()||"mp4").toLowerCase().replace(/[^a-z0-9]/g,"");
   const path=`${user.id}/${Date.now()}-${Math.floor(Math.random()*1e5)}.${ext}`;
   const ct=file.type||({mkv:"video/x-matroska",mp4:"video/mp4",m4v:"video/mp4",webm:"video/webm",mov:"video/quicktime"}[ext])||"application/octet-stream";
