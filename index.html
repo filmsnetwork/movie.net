@@ -1373,6 +1373,15 @@ body:has(#detail:not([hidden])) #ibn,body:has(dialog[open]) #ibn{display:none}
 body.gap-off .gapl{display:none}body.gap-off .gax .gx1{display:none}body.gap-off .gax .gx2{display:grid}body.gap-off .nget .gah,body.gap-off .mgap .gah{margin-bottom:0}
 .mgap .gah .msec{margin:0}.mgap .gah{margin-bottom:10px}
 .gax .gx1,.gax .gx2{place-items:center;width:100%;height:100%}.gax .gx2{display:none!important}body.gap-off .gax .gx1{display:none!important}body.gap-off .gax .gx2{display:grid!important}body:not(.gap-off) .gax .gx1{display:grid!important}
+/* ---- desktop & tablet: 5 posters per row in Similar movies ---- */
+@media(min-width:700px){
+ #info .sim{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:20px 16px}
+ #info .sc .th2{aspect-ratio:2/3!important;border-radius:14px;padding:10px;font-size:.9rem}
+ #info .sc b{font-size:.95rem}
+ #info .sc .pi>span{width:44px;height:44px}
+}
+@media(min-width:1500px){#info .sim{gap:24px 20px}}
+@media(min-width:1000px){#main .ll{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px}}
 </style>
 <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin><link rel="preconnect" href="https://i.ytimg.com" crossorigin><link rel="dns-prefetch" href="https://www.google.com"><link rel="preconnect" href="https://archive.org" crossorigin><link rel="dns-prefetch" href="https://archive.org"><link rel="preconnect" href="https://miqxdcihveangntqucib.supabase.co" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
