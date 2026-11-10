@@ -2263,13 +2263,20 @@ function openInfo(id){
   $("#info").innerHTML=`<div class="nfh" style="${bgOf(m,1)}${heroPos(m)}"><button class="bk" data-act="iback" aria-label="Back">${ic("back")}</button>${tr.length?`<button class="nftb" data-act="trailer" data-i="0" aria-label="Play official trailer"><span class="nftp">${ic("play","f")}</span>Official trailer</button>`:""}</div>
   <div class="nfb"><h1>${esc(m.title)}</h1>
   <div class="mline">${m.rating?`<span class="rs">${ic("star","f")} ${esc(m.rating)}/10</span>`:""}${m.release_year?`<span>${esc(m.release_year)}</span>`:""}${m.duration_minutes?`<span>${fmtMin(m.duration_minutes)}</span>`:""}${(m.genres||[]).length?`<span class="gl" aria-label="Category">${m.genres.map(g=>`<button type="button" data-gn="${esc(g)}">${esc(g)}</button>`).join(", ")}</span>`:""}<span>${m.type==="series"?"Series":"Movie"}</span></div>
-  <div class="nfa acts">${m.type==="movie"&&!m.video_url&&!m.demo?`<button class="nfs" data-act="soon">${ic("clock")} Coming soon</button>`:`<button class="btn" data-act="iwatch">${ic("play","f")} Watch</button>`}<button class="nfs" data-act="watchlist">${ic("plus")} My List</button><button class="nfs" data-act="favorites" aria-label="Favorite">${ic("heart")}</button></div>
+  <div class="nfa acts">${m.type==="movie"&&!m.video_url&&!m.demo?`<button class="nfs" data-act="soon">${ic("clock")} Coming soon</button>`:`<button class="btn" data-act="iwatch">${ic("play","f")} Watch Now</button>`}<button class="nfs" data-act="watchlist">${ic("plus")} Add to List</button><button class="nfs" data-act="favorites" aria-label="Favorite">${ic("heart")}</button></div>
   <div class="nfa nfa2"><button class="nfs" data-act="share">${ic("share")} Share</button></div>
   ${m.description?`<div class="desc"><p class="dtx${long?" cl":""}">${esc(m.description)}</p>${long?`<button class="more" data-act="more">more</button>`:""}</div>`:""}
-  <div class="nfinfo"><span><i>Type</i><b>${m.type==="series"?"Series":"Movie"}</b></span>${m.release_year?`<span><i>Year</i><b>${esc(m.release_year)}</b></span>`:""}${m.duration_minutes?`<span><i>Length</i><b>${fmtMin(m.duration_minutes)}</b></span>`:""}${m.industry?`<span><i>Origin</i><b>${esc(m.industry)}</b></span>`:""}${(m.subtitles||"").trim()?`<span><i>Subtitles</i><b>Yes</b></span>`:""}<span><i>Quality</i><b>HD</b></span></div>
+  <div class="nfinfo"><span><i>Type</i><b>${m.type==="series"?"Series":"Movie"}</b></span>${m.release_year?`<span><i>Year</i><b>${esc(m.release_year)}</b></span>`:""}${m.duration_minutes?`<span><i>Length</i><b>${fmtMin(m.duration_minutes)}</b></span>`:""}${m.industry?`<span><i>Origin</i><b>${esc(m.industry)}</b></span>`:""}${(m.subtitles||"").trim()?`<span><i>Subtitles</i><b>Yes</b></span>`:""}<span><i>Quality</i><b>HD</b></span>${m.type==="series"?'<span id="nfSe" hidden><i>Seasons</i><b></b></span><span id="nfEp" hidden><i>Episodes</i><b></b></span>':""}</div>
   <div id="castslot">${castHtml(cs)}</div>
   ${sim.length?`<h2 class="simh">Similar movies</h2><div class="sim">${sim.map(simCard).join("")}</div>`:""}</div>`;
   $("#info").hidden=false;$("#info").scrollTop=0;document.body.style.overflow="hidden";syncActs();
+  if(m.type==="series"&&sb&&m.id!=null&&!m.demo){
+    Promise.resolve(sb.from("episodes").select("season_number").eq("series_id",m.id)).then(r=>{
+      if(!r||!r.data||!r.data.length||cur!==m)return;
+      const se=new Set(r.data.map(e=>e.season_number)).size,a=$("#nfSe"),b=$("#nfEp");
+      if(a){a.querySelector("b").textContent=se;a.hidden=false}if(b){b.querySelector("b").textContent=r.data.length;b.hidden=false}
+    },()=>{});
+  }
   if(m.cast_list===undefined&&sb&&m.id!=null&&!m.demo){
     sb.from("movies").select("cast_list").eq("id",m.id).maybeSingle().then(r=>{
       const v=(r.data&&r.data.cast_list)||"";m.cast_list=v;
