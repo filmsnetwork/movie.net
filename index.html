@@ -1384,6 +1384,24 @@ body.gap-off .gapl{display:none}body.gap-off .gax .gx1{display:none}body.gap-off
 @media(min-width:1000px){#main .ll{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px}}
 #nav .nbrand i{background:none!important;box-shadow:none!important;padding:0;overflow:hidden}#nav .nbrand i img{width:100%;height:100%;display:block;border-radius:22%}
 #intro .im{background:none!important;box-shadow:none!important;padding:0;overflow:hidden}#intro .im img{width:100%;height:100%;display:block}
+/* ---- title page on laptops & desktops: trailer on the left, details on the right ---- */
+.nfinfo{display:flex;flex-wrap:wrap;gap:10px 26px;margin:14px 0 4px;padding:12px 0 0;border-top:1px solid var(--line);font-size:.85rem}
+.nfinfo span{display:flex;gap:7px;align-items:baseline}.nfinfo i{font-style:normal;color:var(--mute)}.nfinfo b{font-weight:700}
+@media(min-width:900px){
+ #info:not([hidden]){display:grid;grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:36px;grid-auto-rows:min-content;align-content:start;padding:32px max(32px,calc((100% - 1200px)/2)) 80px}
+ #info>.nfh{grid-column:1;grid-row:1/span 7;aspect-ratio:16/9;max-height:none;width:100%;border-radius:18px;overflow:hidden;align-self:start;padding-top:0;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+ #info>.nfh:after{background:linear-gradient(to top,rgba(0,0,0,.35) 0,transparent 45%)}
+ #info>.nfb{display:contents}
+ #info .nfb>*{grid-column:2;min-width:0}
+ #info .nfb>h1{margin-top:0;font-size:1.9rem}
+ #info .nfb>#castslot,#info .nfb>.simh,#info .nfb>.sim{grid-column:1/-1}
+ #info .nfb>.nfa{margin-top:12px}
+ #info .nfb>.nfa2{margin-top:8px}#info .nfb>.nfa2 .nfs{width:auto;padding-left:22px;padding-right:22px}
+ #info .nfb>.desc{margin-top:14px}
+ #info .nfb>.nfinfo{grid-column:2}
+ #info .nfb>#castslot{margin-top:28px}
+}
+@media(min-width:900px){#info .nfb>.nfa2{justify-self:start}}
 </style>
 <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin><link rel="preconnect" href="https://i.ytimg.com" crossorigin><link rel="dns-prefetch" href="https://www.google.com"><link rel="preconnect" href="https://archive.org" crossorigin><link rel="dns-prefetch" href="https://archive.org"><link rel="preconnect" href="https://miqxdcihveangntqucib.supabase.co" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
@@ -2244,10 +2262,11 @@ function openInfo(id){
   const tr=parseTr(m.trailers),cs=parseCast(m.cast_list),sim=similarTo(m),long=(m.description||"").length>120;
   $("#info").innerHTML=`<div class="nfh" style="${bgOf(m,1)}${heroPos(m)}"><button class="bk" data-act="iback" aria-label="Back">${ic("back")}</button>${tr.length?`<button class="nftb" data-act="trailer" data-i="0" aria-label="Play official trailer"><span class="nftp">${ic("play","f")}</span>Official trailer</button>`:""}</div>
   <div class="nfb"><h1>${esc(m.title)}</h1>
-  <div class="mline">${m.rating?`<span class="rs">${ic("star","f")} ${esc(m.rating)}</span>`:""}${m.release_year?`<span>${esc(m.release_year)}</span>`:""}${m.duration_minutes?`<span>${fmtMin(m.duration_minutes)}</span>`:""}${(m.genres||[]).length?`<span class="gl" aria-label="Category">${m.genres.map(g=>`<button type="button" data-gn="${esc(g)}">${esc(g)}</button>`).join(", ")}</span>`:""}<span>${m.type==="series"?"Series":"Movie"}</span></div>
+  <div class="mline">${m.rating?`<span class="rs">${ic("star","f")} ${esc(m.rating)}/10</span>`:""}${m.release_year?`<span>${esc(m.release_year)}</span>`:""}${m.duration_minutes?`<span>${fmtMin(m.duration_minutes)}</span>`:""}${(m.genres||[]).length?`<span class="gl" aria-label="Category">${m.genres.map(g=>`<button type="button" data-gn="${esc(g)}">${esc(g)}</button>`).join(", ")}</span>`:""}<span>${m.type==="series"?"Series":"Movie"}</span></div>
   <div class="nfa acts">${m.type==="movie"&&!m.video_url&&!m.demo?`<button class="nfs" data-act="soon">${ic("clock")} Coming soon</button>`:`<button class="btn" data-act="iwatch">${ic("play","f")} Watch</button>`}<button class="nfs" data-act="watchlist">${ic("plus")} My List</button><button class="nfs" data-act="favorites" aria-label="Favorite">${ic("heart")}</button></div>
   <div class="nfa nfa2"><button class="nfs" data-act="share">${ic("share")} Share</button></div>
   ${m.description?`<div class="desc"><p class="dtx${long?" cl":""}">${esc(m.description)}</p>${long?`<button class="more" data-act="more">more</button>`:""}</div>`:""}
+  <div class="nfinfo"><span><i>Type</i><b>${m.type==="series"?"Series":"Movie"}</b></span>${m.release_year?`<span><i>Year</i><b>${esc(m.release_year)}</b></span>`:""}${m.duration_minutes?`<span><i>Length</i><b>${fmtMin(m.duration_minutes)}</b></span>`:""}${m.industry?`<span><i>Origin</i><b>${esc(m.industry)}</b></span>`:""}${(m.subtitles||"").trim()?`<span><i>Subtitles</i><b>Yes</b></span>`:""}<span><i>Quality</i><b>HD</b></span></div>
   <div id="castslot">${castHtml(cs)}</div>
   ${sim.length?`<h2 class="simh">Similar movies</h2><div class="sim">${sim.map(simCard).join("")}</div>`:""}</div>`;
   $("#info").hidden=false;$("#info").scrollTop=0;document.body.style.overflow="hidden";syncActs();
