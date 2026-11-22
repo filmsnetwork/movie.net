@@ -5560,6 +5560,10 @@ if(typeof role!=="undefined"&&role==="admin")alStart();
   var side=function(){var n=document.getElementById("nget");if(!n)return;n.hidden=standalone();var l=n.querySelector("[data-getapp]");if(l&&!l.firstChild)l.innerHTML=rows()};
   try{if(localStorage.getItem("mx-gap-off")==="1")document.body.classList.add("gap-off")}catch(e){}
   side();
+  /* APK link: only download when the file really exists, otherwise fall back to installing the web app */
+  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href$="movies.net.apk"]');if(!a||a.dataset.ok)return;e.preventDefault();
+    fetch(APK,{method:"HEAD",cache:"no-store"}).then(function(r){var ct=r.headers.get("content-type")||"";if(!r.ok||/text\/html/i.test(ct))throw 0;a.dataset.ok="1";a.click();setTimeout(function(){delete a.dataset.ok},500)})
+    .catch(function(){if(dp){toast("The Android file isn't uploaded yet \u2014 installing the web app instead");install()}else toast("Android file isn't available yet. Open your browser menu and choose Install app / Add to Home screen.")})});
   document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("[data-gat]");if(t){var off=document.body.classList.toggle("gap-off");try{localStorage.setItem("mx-gap-off",off?"1":"0")}catch(x){}return}
     var g=e.target.closest&&e.target.closest("[data-ga]");if(!g)return;
     if(g.dataset.ga==="pc"){if(dp)install();else toast("In Chrome or Edge, open the menu and choose Install movies.net")}
